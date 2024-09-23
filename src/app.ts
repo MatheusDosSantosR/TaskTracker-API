@@ -10,8 +10,8 @@ app.use(express.json());
 
 // Testar conexão com o banco de dados
 sequelize.authenticate()
-  .then((dd) => {
-    console.log('Conectado ao banco de dados MySQL.', dd);
+  .then(() => {
+    console.log('Conectado ao banco de dados MySQL.');
   })
   .catch((err) => {
     console.error('Erro ao conectar ao banco de dados:', err);
