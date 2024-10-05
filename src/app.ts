@@ -1,29 +1,19 @@
 import express from 'express';
-import dotenv from 'dotenv';
-dotenv.config();
-import todoRoutes from './routes/todoRoutes';
-import sequelize from './config/database';
+import 'reflect-metadata'; // Necessário para o TypeORM
+import { AppDataSource } from './config/ormconfig';
+import todoRoutes from './routes/todoRoutes.js';
 
 const app = express();
 
 app.use(express.json());
 
-// Testar conexão com o banco de dados
-sequelize.authenticate()
+// Inicializa a conexão com o banco de dados
+AppDataSource.initialize()
   .then(() => {
-    console.log('Conectado ao banco de dados MySQL.');
+    console.log('Conectado ao banco de dados Postgres.');
   })
   .catch((err) => {
     console.error('Erro ao conectar ao banco de dados:', err);
-  });
-
-// Sincronizar modelos com o banco de dados
-sequelize.sync()
-  .then(() => {
-    console.log('Modelos sincronizados com o banco de dados.');
-  })
-  .catch((err) => {
-    console.error('Erro ao sincronizar modelos:', err);
   });
 
 app.use('/api/todos', todoRoutes);

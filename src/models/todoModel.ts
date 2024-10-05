@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, STRING, BOOLEAN, INTEGER } from 'sequelize';
 import sequelize from '../config/database';
 
 class Todo extends Model {
@@ -12,24 +12,24 @@ class Todo extends Model {
 Todo.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     title: {
-      type: new DataTypes.STRING(128),
+      type: STRING(128),
       allowNull: false,
     },
     description: {
-      type: new DataTypes.STRING(255),
+      type: STRING(255),
       allowNull: true,
     },
     completed: {
-      type: DataTypes.BOOLEAN,
+      type: BOOLEAN,
       defaultValue: false,
     },
     userId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: INTEGER,
       allowNull: false,
     },
   },

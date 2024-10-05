@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Todo from '../models/todoModel';
 
-export const createTodo = async (req: Request, res: Response) => {
+/* export const createTodo = async (req: Request, res: Response) => {
   try {
     const todo = await Todo.create(req.body);
     res.status(201).json(todo);
@@ -17,6 +17,6 @@ export const getTodos = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ error: 'Erro ao obter tarefas.' });
   }
-};
+}; */
 
 // Métodos adicionais: getTodoById, updateTodo, deleteTodo

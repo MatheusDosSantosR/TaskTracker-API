@@ -2,14 +2,16 @@
   "name": "tasktracker-api",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "test": "jest",
-    "sequelize": "ts-node ./node_modules/.bin/sequelize",
-    "db:migrate": "ts-node ./node_modules/.bin/sequelize db:migrate",
-    "db:migrate:undo": "ts-node ./node_modules/.bin/sequelize db:migrate:undo",
+    "typeorm": "typeorm-ts-node-esm -d src/config/data-source.ts",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:create": "npm run typeorm -- migration:create",
     "db:seed": "ts-node ./node_modules/.bin/sequelize db:seed:all",
     "db:seed:undo": "ts-node ./node_modules/.bin/sequelize db:seed:undo:all"
   },
@@ -23,20 +25,22 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
-    "sequelize": "^6.37.3"
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.5.5",
+    "@types/node": "^22.7.4",
     "@types/sequelize": "^4.28.20",
     "jest": "^29.7.0",
-    "sequelize-cli": "^6.6.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   }
 }
