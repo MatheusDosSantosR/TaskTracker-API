@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
-import {Todo} from './Todo'; // Usando o alias configurado no `tsconfig.json`
+import { Todo } from './Todo';
 
 @Entity()
 export class User {
