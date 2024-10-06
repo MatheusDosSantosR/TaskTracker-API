@@ -3,6 +3,7 @@ import express from 'express';
 import { AppDataSource } from './config/data-source';
 import userRoutes from './routes/userRoutes'
 import authRoutes from './routes/authRoutes'
+import profileRoutes from './routes/profileRoutes'
 import { authMiddleware } from 'middlewares/authMiddleware';
 
 const app = express();
@@ -21,6 +22,7 @@ AppDataSource.initialize()
 //app.use('/api/todos', todoRoutes);
 app.use('/api/public/users', userRoutes)
 app.use('/api/login', authRoutes)
+app.use('/api/profile',authMiddleware, profileRoutes)
 
 // Esta rota só pode ser acessada por usuários autenticados
 app.get('/api/protected', authMiddleware, (req, res) => {
