@@ -3,6 +3,7 @@ import express from 'express';
 import { AppDataSource } from './config/data-source';
 //import todoRoutes from './routes/todoRoutes.js';
 import userRoutes from './routes/userRoutes'
+import authRoutes from './routes/authRoutes'
 
 const app = express();
 
@@ -19,5 +20,6 @@ AppDataSource.initialize()
 
 //app.use('/api/todos', todoRoutes);
 app.use('/api/public/users', userRoutes)
+app.use('/api/login', authRoutes)
 
 export default app;
