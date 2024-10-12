@@ -1,7 +1,11 @@
 import { IUser } from '../../interfaces/IUser';
+import express from 'express';
 
-declare namespace Express {
-  export interface Request {
-    user?: IUser;
+declare global {
+  namespace Express {
+    interface Request {
+      user: IUser;
+      userLogged: any;
+    }
   }
 }

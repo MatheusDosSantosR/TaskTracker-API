@@ -22,7 +22,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         const decoded = jwt.verify(token, JWT_SECRET);
 
         // Adicionar os dados do token decodificado ao objeto `req` para uso posterior
-        req.user = decoded;
+        req.userLogged = decoded;
 
         // Chamar o próximo middleware ou rota
         next();

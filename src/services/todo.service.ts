@@ -49,7 +49,7 @@ export class TodoService {
     // Buscar todos os to-dos de um usuário
     async getTodos(userId: number) {
         return await this.todoRepository.find({
-            where: { user: { id: userId }, deletedAt: null },
+            where: { user: { id: userId }, deletedAt: undefined },
             order: { createdAt: 'DESC' }
         });
     }

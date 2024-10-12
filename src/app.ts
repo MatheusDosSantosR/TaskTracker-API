@@ -26,9 +26,4 @@ app.use('/api/login', authRoutes)
 app.use('/api/profile',authMiddleware, profileRoutes)
 app.use('/api/todos', authMiddleware, todoRoutes)
 
-// Esta rota só pode ser acessada por usuários autenticados
-app.get('/api/protected', authMiddleware, (req, res) => {
-    return res.status(200).json({ message: 'Você acessou uma rota protegida!', user: req.user });
-});
-
 export default app;
