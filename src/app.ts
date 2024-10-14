@@ -6,9 +6,17 @@ import authRoutes from './routes/authRoutes'
 import profileRoutes from './routes/profileRoutes'
 import { authMiddleware } from './middlewares/authMiddleware';
 import todoRoutes from './routes/todoRoutes'
+import cors from 'cors';
 
 const app = express();
 
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://meudominio.com'], // Adicione suas origens permitidas
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Inicializa a conexão com o banco de dados
