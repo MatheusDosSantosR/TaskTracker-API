@@ -42,8 +42,8 @@ export class TodoService {
     async deleteTodo(id: string, userId: number) {
         const todo = await this.todoRepository.findOneBy({ id: Number(id), user: { id: userId } });
         if (!todo) throw new Error('To-do não encontrado ou já excluído');
-
         await this.todoRepository.softDelete(id);
+        return todo
     }
 
     // Buscar todos os to-dos de um usuário
