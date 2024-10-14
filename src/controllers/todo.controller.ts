@@ -13,8 +13,8 @@ export class TodoController {
         try {
             const { title, description } = req.body;
             const userId = req.userLogged.userId;
-            const todo = await this.todoService.createTodo(title, description, userId);
-            return res.status(201).json(todo);
+            const data = await this.todoService.createTodo(title, description, userId);
+            return res.status(201).json({msg: "Tarefa Criado com sucesso.", data});
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Erro ao criar o to-do' });
@@ -41,10 +41,10 @@ export class TodoController {
             const { id } = req.params;
             const userId = req.userLogged.userId;
             const data = await this.todoService.deleteTodo(id, userId);
-            return res.status(200).json({ message: 'To-do excluído com sucesso', data});
+            return res.status(200).json({ msg: 'Tarefa excluída com sucesso.', data});
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao excluir o to-do' });
+            return res.status(500).json({ message: 'Erro ao excluir a tarefa.' });
         }
     }
 
