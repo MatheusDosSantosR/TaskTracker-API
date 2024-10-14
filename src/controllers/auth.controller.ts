@@ -42,11 +42,15 @@ export class AuthController {
             const token = jwt.sign(
                 { userId: user.id, email: user.email }, // Payload do JWT
                 JWT_SECRET, // Chave secreta
-                { expiresIn: '1h' } // Token válido por 1 hora
+                { expiresIn: '10h' } // Token válido por 1 hora
             );
-    
+            const returnUser = {
+                id: user.id,
+                email: user.email,
+                name: user.name
+            }
             // Retornar o token ao cliente
-            return res.status(200).json({ token });
+            return res.status(200).json({ token, user: returnUser });
         } catch (error) {
             return res.status(500).json({ message: 'Não foi possivel autenticar.' });
         }
