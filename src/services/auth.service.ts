@@ -8,7 +8,6 @@ export class AuthService {
     // Método para criar um novo usuário
     async authUser(name: string, email: string, password: string) {
         // Verifica se o usuário já existe
-        console.log("aqui")
         const existingUser = await this.userRepository.findOne({ where: { email } });
 
         if (existingUser) {
