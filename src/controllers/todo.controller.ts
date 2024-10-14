@@ -12,7 +12,7 @@ export class TodoController {
     async createTodo(req: Request, res: Response) {
         try {
             const { title, description } = req.body;
-            const userId = req.user.userId;
+            const userId = req.userLogged.userId;
             const todo = await this.todoService.createTodo(title, description, userId);
             return res.status(201).json(todo);
         } catch (error) {
@@ -26,7 +26,7 @@ export class TodoController {
         try {
             const { id } = req.params;
             const { title, description, isCompleted } = req.body;
-            const userId = req.user.userId;
+            const userId = req.userLogged.userId;
             const todo = await this.todoService.updateTodo(id, title, description, isCompleted, userId);
             return res.status(200).json(todo);
         } catch (error) {
@@ -39,9 +39,9 @@ export class TodoController {
     async deleteTodo(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const userId = req.user.userId;
-            await this.todoService.deleteTodo(id, userId);
-            return res.status(200).json({ message: 'To-do excluído com sucesso' });
+            const userId = req.userLogged.userId;
+            const data = await this.todoService.deleteTodo(id, userId);
+            return res.status(200).json({ message: 'To-do excluído com sucesso', data});
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Erro ao excluir o to-do' });
@@ -51,7 +51,7 @@ export class TodoController {
     // Lista todos os to-dos de um usuário
     async getTodos(req: Request, res: Response) {
         try {
-            const userId = req.user.userId;
+            const userId = req.userLogged.userId;
             const todos = await this.todoService.getTodos(userId);
             return res.status(200).json(todos);
         } catch (error) {
