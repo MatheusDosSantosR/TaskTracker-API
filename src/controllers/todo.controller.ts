@@ -14,10 +14,10 @@ export class TodoController {
             const { title, description } = req.body;
             const userId = req.userLogged.userId;
             const data = await this.todoService.createTodo(title, description, userId);
-            return res.status(201).json({msg: "Tarefa Criado com sucesso.", data});
+            return res.status(201).json({ msg: "Tarefa criado com sucesso.", data });
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao criar o to-do' });
+            return res.status(500).json({ message: 'Erro ao criar tarefa.' });
         }
     }
 
@@ -27,11 +27,10 @@ export class TodoController {
             const { id } = req.params;
             const { title, description, isCompleted } = req.body;
             const userId = req.userLogged.userId;
-            const todo = await this.todoService.updateTodo(id, title, description, isCompleted, userId);
-            return res.status(200).json(todo);
+            const data = await this.todoService.updateTodo(id, title, description, isCompleted, userId);
+            return res.status(200).json({ msg: "Tarefa atualizada com sucesso.", data });
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Erro ao atualizar o to-do' });
+            return res.status(500).json({ message: 'Erro ao atualizar a tarefa.' });
         }
     }
 
@@ -41,7 +40,7 @@ export class TodoController {
             const { id } = req.params;
             const userId = req.userLogged.userId;
             const data = await this.todoService.deleteTodo(id, userId);
-            return res.status(200).json({ msg: 'Tarefa excluída com sucesso.', data});
+            return res.status(200).json({ msg: 'Tarefa excluída com sucesso.', data });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Erro ao excluir a tarefa.' });
@@ -56,7 +55,7 @@ export class TodoController {
             return res.status(200).json(todos);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Erro ao buscar os to-dos' });
+            return res.status(500).json({ message: 'Erro ao buscar as tarefas.' });
         }
     }
 }

@@ -27,18 +27,20 @@ router.post('/', async (req, res) => {
         // Salvar no banco de dados
         const userRepository = AppDataSource.getRepository(User);
         await userRepository.save(user);
-
-        // Retornar o usuário criado (não retornar a senha)
-        return res.status(201).json({
+        const data = {
             id: user.id,
             firstName: user.name,
-            email: user.email
-        });
+            email: user.email,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        }
+        // Retornar o usuário criado (não retornar a senha)
+        return res.status(201).json({ msg: "Sucesso ao cadastrar usuario", data });
     } catch (error) {
         // Verifica se o erro é uma violação de chave única (e-mail duplicado)
         if (error instanceof QueryFailedError && error.driverError.code === 'ER_DUP_ENTRY') {
             // Código 23505: Violation of unique constraint (PostgreSQL)
-            return res.status(409).json({ message: 'E-mail já está em uso' });
+            return res.status(409).json({ message: 'E-mail já está em uso!' });
         }
 
         return res.status(500).json({ message: 'Erro ao criar o usuário' });
