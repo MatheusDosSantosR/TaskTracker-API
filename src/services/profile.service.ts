@@ -1,8 +1,8 @@
-import { AppDataSource } from '../config/data-source';
-import { Todo } from '../entity/Todo';
-import { User } from '../entity/User';
-import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
+import { Repository } from 'typeorm';
+import { Todo } from '../entity/Todo.js';
+import { User } from '../entity/User.js';
+import { AppDataSource } from '../config/data-source.js';
 
 export class ProfileService {
     private todoRepository: Repository<Todo>;

@@ -1,6 +1,6 @@
-import { AppDataSource } from '../config/data-source';
-import { User } from '../entity/User';
 import { hash } from 'bcrypt';
+import { User } from '../entity/User.js';
+import { AppDataSource } from '../config/data-source.js';
 
 export class AuthService {
     private userRepository = AppDataSource.getRepository(User);

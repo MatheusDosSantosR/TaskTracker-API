@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
-import { compare } from 'bcrypt'; // Para comparar a senha com o hash no banco de dados
 import jwt from 'jsonwebtoken';
-import { AppDataSource } from '../config/data-source';
-import { User } from '../entity/User';
+import { compare } from 'bcrypt';
+import { User } from '../entity/User.js';
+import { Request, Response } from 'express';
+import { AppDataSource } from '../config/data-source.js';
+import { AuthService } from '../services/auth.service.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 

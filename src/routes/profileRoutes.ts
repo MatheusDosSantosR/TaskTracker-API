@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { AppDataSource } from '../config/data-source';
-import { ProfileController } from 'controllers/profile.controller';
-import { User } from '../entity/User';
+import { ProfileController } from '../controllers/profile.controller.js';
 
 const router = Router();
 const profileController = new ProfileController();

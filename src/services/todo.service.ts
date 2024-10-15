@@ -1,7 +1,7 @@
-import { Todo } from '../entity/Todo';
-import { User } from '../entity/User';
-import { AppDataSource } from '../config/data-source';
 import { Repository } from 'typeorm';
+import { Todo } from '../entity/Todo.js';
+import { User } from '../entity/User.js';
+import { AppDataSource } from '../config/data-source.js';
 
 export class TodoService {
     private todoRepository: Repository<Todo>;

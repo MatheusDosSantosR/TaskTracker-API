@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
-import {User} from '../entity/User'; // Usando o alias configurado no `tsconfig.json`
+import { User } from '../entity/User.js'; // Usando o alias configurado no `tsconfig.json`
 
 @Entity()
 export class Todo {
@@ -12,7 +12,7 @@ export class Todo {
     @Column({ type: 'text', nullable: true })
     description: string;
 
-    @Column({ type:"boolean", default: false })
+    @Column({ type: "boolean", default: false })
     isCompleted: boolean;
 
     @ManyToOne(() => User, (user) => user.todos, { onDelete: 'CASCADE' })

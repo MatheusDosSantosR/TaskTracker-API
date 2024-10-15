@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import { AppDataSource } from '../config/data-source';
-import { User } from '../entity/User';
 import { hash } from 'bcrypt';
+import { Router } from 'express';
+import { User } from '../entity/User.js';
 import { QueryFailedError } from 'typeorm';
+import { AppDataSource } from '../config/data-source.js';
 
 const router = Router();
 

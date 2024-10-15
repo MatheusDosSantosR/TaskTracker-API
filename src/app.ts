@@ -1,11 +1,11 @@
 import 'reflect-metadata'; // Necessário para o TypeORM
 import express from 'express';
-import { AppDataSource } from './config/data-source';
-import userRoutes from './routes/userRoutes'
-import authRoutes from './routes/authRoutes'
-import profileRoutes from './routes/profileRoutes'
-import { authMiddleware } from './middlewares/authMiddleware';
-import todoRoutes from './routes/todoRoutes'
+import { AppDataSource } from './config/data-source.js';
+import userRoutes from './routes/userRoutes.js'
+import authRoutes from './routes/authRoutes.js'
+import profileRoutes from './routes/profileRoutes.js'
+import { authMiddleware } from './middlewares/authMiddleware.js';
+import todoRoutes from './routes/todoRoutes.js'
 import cors from 'cors';
 
 const app = express();
