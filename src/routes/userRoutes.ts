@@ -12,7 +12,10 @@ router.post('/', async (req, res) => {
 
         // Verificar se os campos obrigatórios foram preenchidos
         if (!name || !email || !password) {
-            return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+            return res.status(400).json({ msg: 'Todos os campos são obrigatórios' });
+        }
+        if(password.length < 6){
+            return res.status(400).json({ msg: 'Senha deve conter mais que 6 digitos.' });
         }
 
         // Hash da senha
