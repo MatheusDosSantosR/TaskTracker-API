@@ -11,9 +11,8 @@ export class TodoController {
     // Cria um novo to-do
     async createTodo(req: Request, res: Response) {
         try {
-            const { title, description } = req.body;
             const userId = req.userLogged.userId;
-            const data = await this.todoService.createTodo(title, description, userId);
+            const data = await this.todoService.createTodo(req.body, userId);
             return res.status(201).json({ msg: "Tarefa criado com sucesso.", data });
         } catch (error) {
             console.error(error);
@@ -25,9 +24,9 @@ export class TodoController {
     async updateTodo(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const { title, description, isCompleted } = req.body;
+            //const { title, description, isCompleted, priority } = req.body;
             const userId = req.userLogged.userId;
-            const data = await this.todoService.updateTodo(id, title, description, isCompleted, userId);
+            const data = await this.todoService.updateTodo(req.body, id, userId);
             return res.status(200).json({ msg: "Tarefa atualizada com sucesso.", data });
         } catch (error) {
             return res.status(500).json({ message: 'Erro ao atualizar a tarefa.' });
