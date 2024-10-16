@@ -9,7 +9,7 @@
     "build": "npm run clean && tsc",
     "dev": "tsx watch src/server.ts",
     "test": "jest",
-    "typeorm": "typeorm-ts-node-esm -d src/config/data-source.ts",
+    "typeorm": "typeorm-ts-node-esm -d ./src/config/data-source.js",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:create": "npm run typeorm -- migration:create",

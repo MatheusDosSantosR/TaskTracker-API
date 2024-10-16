@@ -20,7 +20,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Inicializa a conexão com o banco de dados
-AppDataSource.initialize()
+await AppDataSource.initialize()
     .then(() => {
         console.log('Conectado ao banco de dados MySql.');
     })

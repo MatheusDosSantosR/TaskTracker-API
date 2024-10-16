@@ -1,50 +1,65 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable } from 'typeorm';
-import { User } from '../entity/User.js';
-import { Category } from '../entity/Category.js';
-import { Subtask } from '../entity/Subtask.js';
-import { Comment } from '../entity/Comment.js';
+// src/entity/Todo.ts
+
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    ManyToMany,
+    JoinTable,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+} from 'typeorm';
+import { User } from './User.js';
+import { Category } from './Category.js';
+import { Subtask } from './Subtask.js';
+import { Comment } from './Comment.js';
 
 @Entity()
 export class Todo {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: 'varchar', length: 255 })
     title: string;
 
     @Column({ type: 'text', nullable: true })
     description: string;
 
-    @Column({ type: "boolean", default: false })
+    @Column({ name: 'is_completed', type: 'boolean', default: false })
     isCompleted: boolean;
 
-    @Column({ type: 'enum', enum: ['low', 'medium', 'high'], default: 'medium' }) // Prioridade
+    @Column({
+        type: 'enum',
+        enum: ['low', 'medium', 'high'],
+        default: 'medium',
+    })
     priority: 'low' | 'medium' | 'high';
 
-    @Column({ type: 'date', nullable: true }) // Data de vencimento
-    dueDate: Date;
-
-    @ManyToMany(() => Category)
-    @JoinTable()
-    categories: Category[];
+    @Column({ name: 'due_date', type: 'date', nullable: true })
+    dueDate: Date | null;
 
     @ManyToOne(() => User, (user) => user.todos, { onDelete: 'CASCADE' })
     user: User;
 
-    @CreateDateColumn()
-    createdAt: Date;
+    @ManyToMany(() => Category, { cascade: true })
+    @JoinTable()
+    categories: Category[];
 
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date | null;
-
-/*     // Relação com subtarefas
-    @ManyToOne(() => Subtask, (subtask) => subtask.todo, { cascade: true })
+    @OneToMany(() => Subtask, (subtask) => subtask.todo)
     subtasks: Subtask[];
 
-    // Relação com comentários
-    @ManyToOne(() => Comment, (comment) => comment.todo, { cascade: true })
-    comments: Comment[]; */
+    @OneToMany(() => Comment, (comment) => comment.todo)
+    comments: Comment[];
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date | null;
 }

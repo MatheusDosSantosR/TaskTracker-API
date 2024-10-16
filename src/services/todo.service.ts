@@ -50,6 +50,7 @@ export class TodoService {
     async getTodos(userId: number) {
         return await this.todoRepository.find({
             where: { user: { id: userId }, deletedAt: undefined },
+            relations: ['subtasks'],
             order: { updatedAt: 'DESC' }
         });
     }
