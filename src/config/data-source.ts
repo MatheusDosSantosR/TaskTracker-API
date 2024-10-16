@@ -1,8 +1,12 @@
 import "reflect-metadata"
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-import { Todo } from '../entity/Todo.js'
-import { User } from '../entity/User.js'
+import { Todo } from '../entity/Todo.js';
+import { User } from '../entity/User.js';
+import { Category } from '../entity/Category.js';
+import { Comment } from '../entity/Comment.js';
+import { Subtask } from '../entity/Subtask.js';
+
 
 dotenv.config();
 
@@ -15,7 +19,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: true,
     logging: process.env.DB_LOGGING === 'true',
-    entities: [Todo, User],
+    entities: [Todo, User, Category, Comment, Subtask],
     migrations: [],
     subscribers: []
 });

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
     "dev": "tsx watch src/server.ts",
     "test": "jest",
     "typeorm": "typeorm-ts-node-esm -d src/config/data-source.ts",
