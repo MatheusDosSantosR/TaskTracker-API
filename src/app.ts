@@ -6,6 +6,8 @@ import authRoutes from './routes/authRoutes.js'
 import profileRoutes from './routes/profileRoutes.js'
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import todoRoutes from './routes/todoRoutes.js'
+import commentRoutes from './routes/commentRoutes.js'
+import { errorHandler } from 'middlewares/errorHandler.js';
 import cors from 'cors';
 
 const app = express();
@@ -16,8 +18,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());
+app.use(cors(corsOptions), express.json(), errorHandler);
 
 // Inicializa a conexão com o banco de dados
 await AppDataSource.initialize()
@@ -31,7 +32,8 @@ await AppDataSource.initialize()
 //app.use('/api/todos', todoRoutes);
 app.use('/api/public/users', userRoutes)
 app.use('/api/login', authRoutes)
-app.use('/api/profile',authMiddleware, profileRoutes)
+app.use('/api/profile', authMiddleware, profileRoutes)
 app.use('/api/todos', authMiddleware, todoRoutes)
+app.use('/api/todos/comments', authMiddleware, commentRoutes)
 
 export default app;
