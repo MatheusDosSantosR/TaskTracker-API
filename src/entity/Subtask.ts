@@ -7,6 +7,7 @@ import {
     ManyToOne,
     CreateDateColumn,
     UpdateDateColumn,
+    DeleteDateColumn
 } from 'typeorm';
 import { Todo } from './Todo.js';
 
@@ -24,9 +25,12 @@ export class Subtask {
     @ManyToOne(() => Todo, (todo) => todo.subtasks, { onDelete: 'CASCADE', cascade: true })
     todo: any;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt: Date;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date | null;
 }
