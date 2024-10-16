@@ -23,13 +23,16 @@ export class AuthController {
             if (!email || !password) {
                 return res.status(400).json({ message: 'Email e senha são obrigatórios' });
             }
-    
+
             // Buscar o usuário pelo email
             const userRepository = AppDataSource.getRepository(User);
-            const user = await userRepository.findOne({ where: { email } });
+            const user = await userRepository.findOne({
+                where: { email },
+                select: ['id', 'email', 'password'] 
+            });
     
             if (!user) {
-                return res.status(401).json({ message: 'Credenciais inválidas' });
+                return res.status(401).json({message: 'Credenciais inválidas' });
             }
     
             // Comparar a senha fornecida com o hash armazenado
