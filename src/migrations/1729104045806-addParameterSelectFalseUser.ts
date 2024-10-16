@@ -4,11 +4,13 @@ export class AddParameterSelectFalseUser1729104045806 implements MigrationInterf
     name = 'AddParameterSelectFalseUser1729104045806'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-
+        await queryRunner.query(`ALTER TABLE \`comment\` DROP FOREIGN KEY \`FK_f28138baab6c22e4b27f489d8be\``);
+        await queryRunner.query(`ALTER TABLE \`comment\` DROP FOREIGN KEY \`FK_c0354a9a009d3bb45a08655ce3b\``);
         await queryRunner.query(`ALTER TABLE \`comment\` CHANGE \`deleted_at\` \`deleted_at\` datetime(6) NULL`);
         await queryRunner.query(`ALTER TABLE \`comment\` CHANGE \`todoId\` \`todoId\` int NULL`);
         await queryRunner.query(`ALTER TABLE \`comment\` CHANGE \`userId\` \`userId\` int NULL`);
         await queryRunner.query(`ALTER TABLE \`user\` CHANGE \`deleted_at\` \`deleted_at\` datetime(6) NULL`);
+        await queryRunner.query(`ALTER TABLE \`subtask\` DROP FOREIGN KEY \`FK_c18d34a989b753de67e6edbb855\``);
         await queryRunner.query(`ALTER TABLE \`subtask\` CHANGE \`id\` \`id\` int NOT NULL AUTO_INCREMENT`);
         await queryRunner.query(`ALTER TABLE \`subtask\` CHANGE \`deleted_at\` \`deleted_at\` datetime(6) NULL`);
         await queryRunner.query(`ALTER TABLE \`subtask\` CHANGE \`todoId\` \`todoId\` int NULL`);
