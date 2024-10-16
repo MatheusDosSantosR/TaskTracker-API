@@ -4,6 +4,7 @@ import {
     Column,
     ManyToOne,
     CreateDateColumn,
+    DeleteDateColumn
 } from 'typeorm';
 import { Todo } from './Todo.js';
 import { User } from './User.js';
@@ -22,6 +23,9 @@ export class Comment {
     @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
     user: any;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date | null;
 }
