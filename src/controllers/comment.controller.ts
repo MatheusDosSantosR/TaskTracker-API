@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { CommentService } from '../services/comment.service.js';
-
+import { SuccessResponse, ErrorResponse } from 'Utils/responseFormatter.js';
 export class CommentController {
     private commentService: CommentService;
 
@@ -9,56 +9,54 @@ export class CommentController {
     }
 
     // Cria um comentario para uma tarefa
-    async createComment(req: Request, res: Response) {
+    async createComment(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const { comment, todoId } = req.body
             const data = await this.commentService.createComment(comment, todoId, userId);
-            return res.status(201).json({ msg: "Tarefa criado com sucesso.", data });
+            return res.status(201).json(new SuccessResponse('Comentário criado com sucesso!', data));
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Erro ao criar comentario.' });
+            next(error)
         }
     }
 
     //Atualiza um comentario
-    async updateComment(req: Request, res: Response) {
+    async updateComment(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const { id } = req.params;
             const commentData = req.body
-            const updatedComment = await this.commentService.updateComment(commentData, Number(id), Number(userId));
+            const data = await this.commentService.updateComment(commentData, Number(id), Number(userId));
 
-            return res.status(200).json(updatedComment);
-        } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(200).json(new SuccessResponse('Comentário atualiza com sucesso!', data));
+        } catch (error) {
+            next(error);
         }
     }
 
     //Exclui um comentario
-    async deleteComment(req: Request, res: Response) {
+    async deleteComment(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const { commentId } = req.params;
+            const data = await this.commentService.deleteComment(Number(commentId), Number(userId));
 
-            await this.commentService.deleteComment(Number(commentId), Number(userId));
-
-            return res.status(200).json({ message: 'Comentário deletado com sucesso' });
-        } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(200).json(new SuccessResponse('Comentário deletado com sucesso!', data));
+        } catch (error) {
+            next(error);
         }
     }
 
     //Lista comentarios de um to-dos
-    async getComments(req: Request, res: Response) {
+    async getComments(req: Request, res: Response, next: NextFunction) {
         try {
             const { todoId } = req.params; // Supondo que todoId está nos params
 
             const comments = await this.commentService.getComments(Number(todoId));
 
             return res.status(200).json(comments);
-        } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+        } catch (error) {
+            next(error);
         }
     }
 

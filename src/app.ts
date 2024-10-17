@@ -18,7 +18,8 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
 };
 
-app.use(cors(corsOptions), express.json(), errorHandler);
+app.use(express.json());
+app.use(cors(corsOptions));
 
 // Inicializa a conexão com o banco de dados
 await AppDataSource.initialize()
@@ -36,4 +37,5 @@ app.use('/api/profile', authMiddleware, profileRoutes)
 app.use('/api/todos', authMiddleware, todoRoutes)
 app.use('/api/todos/comments', authMiddleware, commentRoutes)
 
+app.use(errorHandler);
 export default app;
