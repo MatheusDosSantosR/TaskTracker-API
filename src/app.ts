@@ -7,7 +7,7 @@ import profileRoutes from './routes/profileRoutes.js'
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import todoRoutes from './routes/todoRoutes.js'
 import commentRoutes from './routes/commentRoutes.js'
-import { errorHandler } from 'middlewares/errorHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 import cors from 'cors';
 
 const app = express();

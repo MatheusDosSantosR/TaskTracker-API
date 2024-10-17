@@ -3,7 +3,7 @@ import { Comment } from '../entity/Comment.js';
 import { User } from '../entity/User.js';
 import { Todo } from '../entity/Todo.js';
 import { AppDataSource } from '../config/data-source.js';
-import { UserError } from 'Utils/responseFormatter.js';
+import { UserError } from '../Utils/responseFormatter.js';
 
 export class CommentService {
     private todoRepository: Repository<Todo>;

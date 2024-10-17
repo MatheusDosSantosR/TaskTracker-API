@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { User } from '../entity/User.js';
 import { AppDataSource } from '../config/data-source.js';
-import { UserError } from 'Utils/responseFormatter.js';
+import { UserError } from '../Utils/responseFormatter.js';
 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';

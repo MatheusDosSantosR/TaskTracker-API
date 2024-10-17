@@ -2,7 +2,7 @@ import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from '../entity/User.js';
 import { AppDataSource } from '../config/data-source.js';
-import { UserError } from 'Utils/responseFormatter.js';
+import { UserError } from '../Utils/responseFormatter.js';
 
 export class ProfileService {
     private userRepository: Repository<User>;

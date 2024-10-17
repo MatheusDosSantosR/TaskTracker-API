@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppDataSource } from '../config/data-source'; // Importar a fonte de dados
-import { Log } from '../entity/Log';
-import { UserError, ErrorResponse } from 'Utils/responseFormatter';
+import { AppDataSource } from '../config/data-source.js'; // Importar a fonte de dados
+import { Log } from '../entity/Log.js';
+import { UserError } from '../Utils/responseFormatter.js';
 
 export async function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
     const logRepository = AppDataSource.getRepository(Log);
@@ -18,7 +18,7 @@ export async function errorHandler(err: any, req: Request, res: Response, next: 
             body: req.body,
             query: req.query,
             params: req.params,
-            stack: err.stack, 
+            stack: err.stack,
         }),
     });
 

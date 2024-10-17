@@ -3,7 +3,7 @@ import { Todo } from '../entity/Todo.js';
 import { User } from '../entity/User.js';
 import { Subtask } from '../entity/Subtask.js';
 import { AppDataSource } from '../config/data-source.js';
-import { UserError } from 'Utils/responseFormatter.js';
+import { UserError } from '../Utils/responseFormatter.js';
 
 
 export class TodoService {

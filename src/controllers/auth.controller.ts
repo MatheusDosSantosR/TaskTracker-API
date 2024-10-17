@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services/auth.service.js';
-import { SuccessResponse } from 'Utils/responseFormatter.js';
+import { SuccessResponse } from '../Utils/responseFormatter.js';
 
 export class AuthController {
     private authService: AuthService;

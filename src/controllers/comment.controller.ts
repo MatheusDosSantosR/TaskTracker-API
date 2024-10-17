@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { CommentService } from '../services/comment.service.js';
-import { SuccessResponse } from 'Utils/responseFormatter.js';
+import { SuccessResponse } from '../Utils/responseFormatter.js';
 export class CommentController {
     private commentService: CommentService;
 

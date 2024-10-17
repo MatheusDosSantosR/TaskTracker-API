@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { TodoService } from '../services/todo.service.js';
-import { SuccessResponse, ErrorResponse } from 'Utils/responseFormatter.js';
+import { SuccessResponse } from '../Utils/responseFormatter.js';
 
 export class TodoController {
     private todoService: TodoService;

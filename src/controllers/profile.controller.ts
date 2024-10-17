@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ProfileService } from '../services/profile.service.js';
-import { SuccessResponse } from 'Utils/responseFormatter.js';
+import { SuccessResponse } from '../Utils/responseFormatter.js';
 
 export class ProfileController {
     private profileService: ProfileService;
