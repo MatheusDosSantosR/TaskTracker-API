@@ -3,6 +3,8 @@ import { Todo } from '../entity/Todo.js';
 import { User } from '../entity/User.js';
 import { Subtask } from '../entity/Subtask.js';
 import { AppDataSource } from '../config/data-source.js';
+import { UserError } from 'Utils/responseFormatter.js';
+
 
 export class TodoService {
     private todoRepository: Repository<Todo>;
@@ -20,8 +22,9 @@ export class TodoService {
         const { title, description, priority, dueDate, subtasks } = body;
         // Verificar se o usuário existe
         const user = await this.userRepository.findOneBy({ id: userId });
-        if (!user) throw new Error('Usuário não encontrado');
-
+        if (!user) throw new UserError('Usuário não encontrado');
+        if (!title) throw new UserError('Titulo e obrigatorio!');
+        
         // Criar o todo sem subtasks inicialmente
         const todo = this.todoRepository.create({
             title,
@@ -63,7 +66,7 @@ export class TodoService {
         });
 
         // Se o todo não existir, lançar um erro
-        if (!todo) throw new Error('To-do não encontrado');
+        if (!todo) throw new UserError('Tarefa não encontrada.');
 
         // Atualizar os campos do todo
         todo.title = title || todo.title;
@@ -115,7 +118,7 @@ export class TodoService {
     // Excluir um to-do (soft delete)
     async deleteTodo(id: string, userId: number) {
         const todo = await this.todoRepository.findOneBy({ id: Number(id), user: { id: userId } });
-        if (!todo) throw new Error('Tarefa não encontrado ou já excluído');
+        if (!todo) throw new UserError('Tarefa não encontrado ou já excluído');
         await this.todoRepository.softDelete(id);
         return todo
     }

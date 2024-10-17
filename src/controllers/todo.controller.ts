@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { TodoService } from '../services/todo.service.js';
+import { SuccessResponse, ErrorResponse } from 'Utils/responseFormatter.js';
 
 export class TodoController {
     private todoService: TodoService;
@@ -9,52 +10,48 @@ export class TodoController {
     }
 
     // Cria um novo to-do
-    async createTodo(req: Request, res: Response) {
+    async createTodo(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const data = await this.todoService.createTodo(req.body, userId);
-            return res.status(201).json({ msg: "Tarefa criado com sucesso.", data });
+            return res.status(201).json(new SuccessResponse("Tarefa criado com sucesso.", data));
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Erro ao criar tarefa.' });
+            next(error);
         }
     }
 
     // Atualiza um to-do
-    async updateTodo(req: Request, res: Response) {
+    async updateTodo(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            //const { title, description, isCompleted, priority } = req.body;
             const userId = req.userLogged.userId;
             const data = await this.todoService.updateTodo(req.body, id, userId);
-            return res.status(200).json({ msg: "Tarefa atualizada com sucesso.", data });
+            return res.status(200).json(new SuccessResponse("Tarefa atualizada com sucesso.", data));
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao atualizar a tarefa.' });
+            next(error);
         }
     }
 
     // Exclui (soft delete) um to-do
-    async deleteTodo(req: Request, res: Response) {
+    async deleteTodo(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
             const userId = req.userLogged.userId;
             const data = await this.todoService.deleteTodo(id, userId);
-            return res.status(200).json({ msg: 'Tarefa excluída com sucesso.', data });
+            return res.status(200).json(new SuccessResponse('Tarefa excluída com sucesso.', data));
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Erro ao excluir a tarefa.' });
+            next(error);
         }
     }
 
     // Lista todos os to-dos de um usuário
-    async getTodos(req: Request, res: Response) {
+    async getTodos(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const todos = await this.todoService.getTodos(userId);
             return res.status(200).json(todos);
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Erro ao buscar as tarefas.' });
+            next(error);
         }
     }
 }
