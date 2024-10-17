@@ -1,38 +1,59 @@
-import { hash } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { compare } from 'bcrypt';
 import { User } from '../entity/User.js';
 import { AppDataSource } from '../config/data-source.js';
+import { UserError } from 'Utils/responseFormatter.js';
+
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 export class AuthService {
     private userRepository = AppDataSource.getRepository(User);
 
-    // Método para criar um novo usuário
-    async authUser(name: string, email: string, password: string) {
-        // Verifica se o usuário já existe
-        const existingUser = await this.userRepository.findOne({ where: { email } });
+    // Método para autenticar um usuário
+    async authUser(body: User) {
 
-        if (existingUser) {
-            const error = new Error('E-mail já está em uso');
-            (error as any).code = 'ER_DUP_ENTRY';
-            throw error;
+        const { email, password } = body
+        // Verificar se o email e a senha foram enviados
+        if (!email || !password) {
+            throw new UserError('Email e senha são obrigatórios');
         }
 
-        // Hash da senha
-        const hashedPassword = await hash(password, 10);
-
-        // Criar o novo usuário
-        const user = this.userRepository.create({
-            name,
-            email,
-            password: hashedPassword,
+        // Verifica se o usuário já existe
+        const user = await this.userRepository.findOne({
+            where: { email },
+            select: ['id', 'email', 'password', 'name']
         });
 
-        await this.userRepository.save(user);
+        if (!user) {
+            throw new UserError('Credenciais inválidas', 401);
+        }
 
-        // Retornar os dados do usuário (sem a senha)
-        return {
-            id: user.id,
-            name: user.name,
+        // Comparar a senha fornecida com o hash armazenado
+        const isPasswordValid = await compare(password, user.password);
+
+        if (!isPasswordValid) {
+            throw new UserError('Senha inválida!', 401);
+        }
+
+        // Gerar o token JWT
+        const token = jwt.sign(
+            { userId: user.id, email: user.email }, // Payload do JWT
+            JWT_SECRET, // Chave secreta
+            { expiresIn: '10h' } // Token válido por 1 hora
+        );
+
+        const removePass = {
+            user: user.id,
             email: user.email,
-        };
+            name: user.name
+        }
+
+        const data = {
+            token: token,
+            ...removePass
+        }
+
+        return data
     }
 }
