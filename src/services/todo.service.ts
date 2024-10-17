@@ -24,7 +24,7 @@ export class TodoService {
         const user = await this.userRepository.findOneBy({ id: userId });
         if (!user) throw new UserError('Usuário não encontrado');
         if (!title) throw new UserError('Titulo e obrigatorio!');
-        
+
         // Criar o todo sem subtasks inicialmente
         const todo = this.todoRepository.create({
             title,
@@ -127,7 +127,7 @@ export class TodoService {
     async getTodos(userId: number) {
         return await this.todoRepository.find({
             where: { user: { id: userId }, deletedAt: undefined },
-            relations: ['subtasks'],
+            relations: ['subtasks', 'comments'],
             order: { updatedAt: 'DESC' }
         });
     }
