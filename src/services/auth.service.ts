@@ -26,7 +26,7 @@ export class AuthService {
         });
 
         if (!user) {
-            throw new UserError('Credenciais inválidas', 401);
+            throw new UserError('Credenciais inválidas !', 401);
         }
 
         // Comparar a senha fornecida com o hash armazenado
@@ -44,14 +44,14 @@ export class AuthService {
         );
 
         const removePass = {
-            user: user.id,
+            id: user.id,
             email: user.email,
             name: user.name
         }
 
         const data = {
             token: token,
-            ...removePass
+            user: removePass
         }
 
         return data
