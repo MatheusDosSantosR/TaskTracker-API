@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { ProfileService } from '../services/profile.service.js';
+import { SuccessResponse } from 'Utils/responseFormatter.js';
 
 export class ProfileController {
     private profileService: ProfileService;
@@ -9,26 +10,26 @@ export class ProfileController {
     }
 
     // Atualiza dados do usuario
-    async updateUser(req: Request, res: Response) {
+    async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
             const { name, email, password } = req.body;
             const userId = req.userLogged.userId;
             const user = await this.profileService.updateUser(name, email, password, userId);
             const data = { id: user.id, name: user.name, email: user.email}
-            return res.status(200).json({msg: "Dados atualizados com sucesso.", data });
+            return res.status(200).json(new SuccessResponse("Dados atualizados com sucesso.", data ));
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao atualizar o usuário.', error});
+            next(error);
         }
     }
 
     // Obtem dados do user
-    async getUser(req: Request, res: Response) {
+    async getUser(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
             const user = await this.profileService.getUser(userId);
             return res.status(200).json(user);
         } catch (error) {
-            return res.status(500).json({ message: 'Erro ao obter dados do usuário.', error});
+            next(error);
         }
     }
 }

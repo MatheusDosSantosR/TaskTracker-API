@@ -4,8 +4,8 @@ import { ProfileController } from '../controllers/profile.controller.js';
 const router = Router();
 const profileController = new ProfileController();
 // Rota para recuperar os dados do perfil do usuário autenticado
-router.get('/', async (req, res) => profileController.getUser(req, res));
+router.get('/', async (req, res, next) => profileController.getUser(req, res, next));
 
 //Rota para atualizar os dados do perfil
-router.put('/', async (req, res) => profileController.updateUser(req, res));
+router.put('/', async (req, res, next) => profileController.updateUser(req, res, next));
 export default router;
