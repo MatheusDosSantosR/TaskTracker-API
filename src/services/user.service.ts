@@ -124,8 +124,8 @@ export class ProfileService {
         };
     }
 
-    async sendPasswordResetEmail(body: { email: string }) {
-        const { email } = body;
+    async sendPasswordResetEmail(body: { email: string; securityToken?: string }) {
+        const { email, securityToken } = body;
 
         if (!email) throw new UserError('Campo email e obrigatório!');
         // Verificar se o usuário existe no banco de dados
@@ -153,17 +153,18 @@ export class ProfileService {
 
         const resetLink = `${process.env.BASE_URL}reset-password/${resetToken}`;
 
-        // Enviar o email com o link de redefinição
-        await transporter.sendMail({
-            to: email,
-            subject: 'Redefinição de senha',
-            text: `Você solicitou a redefinição de senha. Acesse o link para redefinir sua senha: ${resetLink}`,
-        });
-
         //Se existir a variavel Security retorna o token
         //Utilizar para testes automatizados.
-        if (process.env.SMT_SECURITY) {
+        if (securityToken === process.env.SMT_SECURITY) {
             return { resetToken }
+        }
+        else {
+            // Enviar o email com o link de redefinição
+            await transporter.sendMail({
+                to: email,
+                subject: 'Redefinição de senha',
+                text: `Você solicitou a redefinição de senha. Acesse o link para redefinir sua senha: ${resetLink}`,
+            });
         }
 
         return true;
