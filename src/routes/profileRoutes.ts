@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ProfileController } from '../controllers/profile.controller.js';
+import { ProfileController } from '../controllers/user.controller.js';
 
 const router = Router();
 const profileController = new ProfileController();
@@ -8,4 +8,5 @@ router.get('/', async (req, res, next) => profileController.getUser(req, res, ne
 
 //Rota para atualizar os dados do perfil
 router.put('/', async (req, res, next) => profileController.updateUser(req, res, next));
+
 export default router;

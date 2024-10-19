@@ -31,10 +31,10 @@ await AppDataSource.initialize()
     });
 
 //app.use('/api/todos', todoRoutes);
-app.use('/api/public/users', userRoutes)
 app.use('/api/login', authRoutes)
-app.use('/api/profile', authMiddleware, profileRoutes)
+app.use('/api/public/users', userRoutes)
 app.use('/api/todos', authMiddleware, todoRoutes)
+app.use('/api/profile', authMiddleware, profileRoutes)
 app.use('/api/todos/comments', authMiddleware, commentRoutes)
 
 app.use(errorHandler);
