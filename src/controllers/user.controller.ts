@@ -46,9 +46,10 @@ export class ProfileController {
     // Recuperação de senha
     async resetPassword(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req.userLogged.userId;
-            const user = await this.profileService.createUser(userId);
-            return res.status(200).json(user);
+            const { token } = req.params;
+            const { newPassword } = req.body;
+            const data = await this.profileService.resetPassword(token, newPassword);
+            return res.status(200).json(new SuccessResponse("Senha redefinida com sucesso.", data));
         } catch (error) {
             next(error);
         }

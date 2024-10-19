@@ -44,7 +44,7 @@ export class User {
     deletedAt: Date | null;
 
     @Column({ type: 'varchar', length: 255, select: false })
-    resetToken: string;
+    resetToken: string | null;
 
     @DeleteDateColumn({ name: 'expire_token_at' })
     resetTokenExpires: Date | null;

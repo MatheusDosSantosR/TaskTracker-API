@@ -1,6 +1,6 @@
 import { hash } from 'bcrypt';
 import crypto from 'crypto';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { User } from '../entity/User.js';
 import { AppDataSource } from '../config/data-source.js';
 import { UserError } from '../Utils/responseFormatter.js';
@@ -91,7 +91,37 @@ export class ProfileService {
     }
 
     async resetPassword(token: string, newPassword: string) {
-        return true;
+
+        if (!token) throw new UserError('Token é obrigatório!');
+        if (!newPassword) throw new UserError('A nova senha é obrigatório!');
+        if (newPassword.length < 6) throw new UserError('Senha deve conter mais de 6 digitos.');
+
+        // Buscar o usuário pelo token de redefinição
+        const user = await this.userRepository.findOne({
+            where: {
+                resetToken: token,
+                resetTokenExpires: MoreThan(new Date()), // Verifica se o token ainda é válido
+            },
+        });
+
+        if (!user) throw new UserError('Token inválido ou expirado.');
+
+        // Criptografar a nova senha
+        const hashedPassword = await hash(newPassword, 10);
+
+        // Atualizar a senha e remover o token de redefinição
+        user.password = hashedPassword;
+        user.resetToken = null;
+        user.resetTokenExpires = null;
+        await this.userRepository.save(user);
+
+        return {
+            id: user.id,
+            firstName: user.name,
+            email: user.email,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        };
     }
 
     async sendPasswordResetEmail(body: { email: string }) {
