@@ -1,9 +1,12 @@
 import { hash } from 'bcrypt';
+import crypto from 'crypto';
 import { Repository } from 'typeorm';
 import { User } from '../entity/User.js';
 import { AppDataSource } from '../config/data-source.js';
 import { UserError } from '../Utils/responseFormatter.js';
 import { QueryFailedError } from 'typeorm';
+import nodemailer from 'nodemailer';
+
 
 export class ProfileService {
     private userRepository: Repository<User>;
@@ -84,6 +87,56 @@ export class ProfileService {
         }
 
         return data;
+
+    }
+
+    async resetPassword(token: string, newPassword: string) {
+        return true;
+    }
+
+    async sendPasswordResetEmail(body: { email: string }) {
+        const { email } = body;
+
+        if (!email) throw new UserError('Campo email e obrigatório!');
+        // Verificar se o usuário existe no banco de dados
+        const user = await this.userRepository.findOneBy({ email });
+
+        if (!user) throw new UserError('Usuário não encontrado.', 404);
+
+        // Gerar token de redefinição
+        const resetToken = crypto.randomBytes(32).toString('hex');
+
+        // Definir o token e a data de expiração
+        user.resetToken = resetToken;
+        user.resetTokenExpires = new Date(Date.now() + 3600000); // Token válido por 1 hora
+        await this.userRepository.save(user);
+        // Configurar o envio de email
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            secure: true, // Definir como true para SSL
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD,
+            },
+        });
+
+        const resetLink = `${process.env.BASE_URL}reset-password/${resetToken}`;
+
+        // Enviar o email com o link de redefinição
+        await transporter.sendMail({
+            to: email,
+            subject: 'Redefinição de senha',
+            text: `Você solicitou a redefinição de senha. Acesse o link para redefinir sua senha: ${resetLink}`,
+        });
+
+        //Se existir a variavel Security retorna o token
+        //Utilizar para testes automatizados.
+        if (process.env.SMT_SECURITY) {
+            return { resetToken }
+        }
+
+        return true;
 
     }
 }

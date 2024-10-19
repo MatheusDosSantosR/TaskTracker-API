@@ -53,4 +53,14 @@ export class ProfileController {
             next(error);
         }
     }
+
+    // Envio de email contendo token
+    async sendPasswordResetEmail(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await this.profileService.sendPasswordResetEmail(req.body);
+            return res.status(200).json(new SuccessResponse("Email de redefinição de senha enviado com sucesso.", data));
+        } catch (error) {
+            next(error);
+        }
+    }
 }
