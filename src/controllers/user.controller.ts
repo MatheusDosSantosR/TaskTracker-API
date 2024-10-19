@@ -59,7 +59,7 @@ export class ProfileController {
     async sendPasswordResetEmail(req: Request, res: Response, next: NextFunction) {
         try {
             const data = await this.profileService.sendPasswordResetEmail(req.body);
-            return res.status(200).json(new SuccessResponse("Email de redefinição de senha enviado com sucesso.", data));
+            return res.status(200).json(new SuccessResponse("Um link de redefinição de senha foi enviado para o e-mail fornecido.", data));
         } catch (error) {
             next(error);
         }
