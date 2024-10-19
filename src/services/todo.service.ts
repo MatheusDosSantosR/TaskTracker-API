@@ -130,9 +130,10 @@ export class TodoService {
             dueDate: Date | null;
             sortBy: "priority" | "dueDate" | "updatedAt";
             sortDirection: "ASC" | "DESC";
+            priority: 'low' | 'medium' | 'high';
         }
 
-        const { isCompleted, dueDate, sortBy = "updatedAt", sortDirection = "DESC" }: IFiltersTodo = params;
+        const { isCompleted, dueDate, sortBy = "updatedAt", sortDirection = "DESC", priority }: IFiltersTodo = params;
         // Criação da condição base
         const whereCondition: any = {
             user: { id: userId },
@@ -146,6 +147,10 @@ export class TodoService {
 
         if (dueDate != undefined) {
             whereCondition.dueDate = dueDate;
+        }
+
+        if (priority != undefined) {
+            whereCondition.priority = priority;
         }
 
         // Ajustando a ordem da consulta com base nos parâmetros fornecidos
