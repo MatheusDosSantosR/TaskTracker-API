@@ -42,4 +42,10 @@ export class User {
 
     @DeleteDateColumn({ name: 'deleted_at' })
     deletedAt: Date | null;
+
+    @Column({ type: 'varchar', length: 255, select: false })
+    resetToken: string;
+
+    @DeleteDateColumn({ name: 'expire_token_at' })
+    resetTokenExpires: Date | null;
 }
