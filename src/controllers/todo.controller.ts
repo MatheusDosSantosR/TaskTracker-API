@@ -48,7 +48,7 @@ export class TodoController {
     async getTodos(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.userLogged.userId;
-            const todos = await this.todoService.getTodos(userId);
+            const todos = await this.todoService.getTodos(userId, req.query);
             return res.status(200).json(todos);
         } catch (error) {
             next(error);

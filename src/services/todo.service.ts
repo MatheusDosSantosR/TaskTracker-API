@@ -124,11 +124,41 @@ export class TodoService {
     }
 
     // Buscar todos os to-dos de um usuário
-    async getTodos(userId: number) {
+    async getTodos(userId: number, params: any) {
+        interface IFiltersTodo {
+            isCompleted: boolean;
+            dueDate: Date | null;
+            sortBy: "priority" | "dueDate" | "updatedAt";
+            sortDirection: "ASC" | "DESC";
+        }
+
+        const { isCompleted, dueDate, sortBy = "updatedAt", sortDirection = "DESC" }: IFiltersTodo = params;
+        // Criação da condição base
+        const whereCondition: any = {
+            user: { id: userId },
+            deletedAt: undefined,
+        };
+
+        // Adicionando filtros conforme necessário
+        if (isCompleted !== undefined) {
+            whereCondition.isCompleted = isCompleted;
+        }
+
+        if (dueDate != undefined) {
+            whereCondition.dueDate = dueDate;
+        }
+
+        // Ajustando a ordem da consulta com base nos parâmetros fornecidos
+        const orderCondition: any = {};
+        orderCondition[sortBy] = sortDirection;
+
+        console.log("where", whereCondition)
+        // Realiza a consulta com filtros e ordenação dinâmicos
         return await this.todoRepository.find({
-            where: { user: { id: userId }, deletedAt: undefined },
+            where: whereCondition,
             relations: ['subtasks', 'comments'],
-            order: { updatedAt: 'DESC' }
+            order: orderCondition,
         });
     }
+
 }
